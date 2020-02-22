@@ -1,10 +1,12 @@
 import React from "react";
+import { BrowserRouter } from 'react-router-dom';
+import MainRouter from './Components/Router/MainRouter';
 
-function App() {
+const App = () => {
 	return (
-		<div>
-			<h1>GG</h1>
-		</div>
+		<BrowserRouter>
+			<MainRouter />
+		</BrowserRouter>
 	);
 }
 
