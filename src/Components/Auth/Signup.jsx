@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+//add email name pass validation 
 class Signup extends Component {
   constructor() {
     super();
@@ -7,12 +7,14 @@ class Signup extends Component {
       name: "",
       email: "",
       password: "",
-      error: ""
+      error: "",
+      open: false
     }
   }
 
 
   handleChange = (name) => (event) => {
+    this.setState({ error: "" })
     this.setState({ [name]: event.target.value });
   };
 
@@ -24,7 +26,22 @@ class Signup extends Component {
       email,
       password
     };
-    fetch("http://localhost:5000/signup", {
+    this.signup(user).then(data => {
+      if (data.error)
+        this.setState({ error: data.error })
+      else
+        this.setState({
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          open: true
+        })
+    })
+  };
+
+  signup = (user) => {
+    return fetch("http://localhost:5000/signup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -33,19 +50,26 @@ class Signup extends Component {
       body: JSON.stringify(user)
     })
       .then(response => {
-        return response.json()
+        return response.json();
       })
       .catch(err => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   };
 
   render() {
-    const { name, email, password } = this.state;
+    const { name, email, password, error, open } = this.state;
 
     return (
       <div className="container">
         <h2 className="mt-5 mb-5">Signup</h2>
+
+        <div
+          className="alert alert-primary"
+          style={{ display: error ? "" : "none" }}
+        >
+          {error}
+        </div>
 
         <form>
           <div className="form-group">
@@ -77,6 +101,13 @@ class Signup extends Component {
           </div>
           <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Sign up</button>
         </form>
+
+        <div
+          className="alert alert-info"
+          style={{ display: open ? "" : "none" }}
+        >
+          New Account is Created!!....Please Sign in
+        </div>
       </div >
     )
   }
