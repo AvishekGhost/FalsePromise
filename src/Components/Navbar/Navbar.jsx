@@ -12,8 +12,7 @@ const isActive = (history, path) => {
 const ExportedNavbar = ({ history }) => {
 	return (
 		<Navbar
-			style={{ height: "3rem" }}
-			bg="secondary"
+			style={{ height: "3rem", background: "#343640" }}
 			variant="dark"
 			expand="lg"
 			sticky="top"

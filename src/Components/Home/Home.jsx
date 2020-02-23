@@ -56,6 +56,7 @@ const particleParameters = () => {
 		}
 	};
 };
+
 const Home = () => {
 	document.body.className = classes.bcg;
 	return (
