@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./Home.module.css";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import Particles from "react-particles-js";
+import { DisplayMapFC } from "./DisplayMapFC";
 
 const particleParameters = () => {
 	return {
@@ -60,47 +61,52 @@ const particleParameters = () => {
 const Home = () => {
 	document.body.className = classes.bcg;
 	return (
-		<div style={{ marginLeft: "10vw", marginRight: "10vw", marginTop: "5vh" }}>
-			<div className="jumbotron" style={{ opacity: 0.55 }}>
-				<h1>Home</h1>
-				<p className="lead">
-					Blood Bank donation system can collect blood from many donators in
-					short from various sources and distribute that blood to needy people
-					who require blood. Online Blood Bank management system is to provide
-					services for the people who are in need of blood by getting help from
-					the donors who are interested in donating blood for the people.
-				</p>
+		<div className={classes.page}>
+			<div className={classes.map}>
+				<DisplayMapFC />
 			</div>
-			<Row>
-				<Col>
-					<Card style={{ opacity: 0.55 }}>
-						<Card.Body>
-							<Card.Title>Donate Blood</Card.Title>
-							<Card.Text>Click here to donate blood.</Card.Text>
-							<Button variant="primary">SIGN UP</Button>
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col>
-					<Card style={{ opacity: 0.55 }}>
-						<Card.Body>
-							<Card.Title>Need Blood?</Card.Title>
-							<Card.Text>Click here to accept blood.</Card.Text>
-							<Button variant="primary">SIGN UP</Button>
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col>
-					<Card style={{ opacity: 0.55 }}>
-						<Card.Body>
-							<Card.Title>Delivery Agent</Card.Title>
-							<Card.Text>Click here if you want to deliver blood.</Card.Text>
-							<Button variant="primary">SIGN UP</Button>
-						</Card.Body>
-					</Card>
-				</Col>
-			</Row>
-			<Particles params={particleParameters()} />
+			<div className={classes.pageContainer} style={{ width: "33vw" }}>
+				<div className="jumbotron" style={{ opacity: 0.55 }}>
+					<h1>Home</h1>
+					<p className="lead">
+						Blood Bank donation system can collect blood from many donators in
+						short from various sources and distribute that blood to needy people
+						who require blood. Online Blood Bank management system is to provide
+						services for the people who are in need of blood by getting help
+						from the donors who are interested in donating blood for the people.
+					</p>
+				</div>
+				<Row>
+					<Col>
+						<Card style={{ opacity: 0.55 }}>
+							<Card.Body>
+								<Card.Title>Donate Blood</Card.Title>
+								<Card.Text>Click here to donate blood.</Card.Text>
+								<Button variant="primary">SIGN UP</Button>
+							</Card.Body>
+						</Card>
+					</Col>
+					<Col>
+						<Card style={{ opacity: 0.55 }}>
+							<Card.Body>
+								<Card.Title>Need Blood?</Card.Title>
+								<Card.Text>Click here to accept blood.</Card.Text>
+								<Button variant="primary">SIGN UP</Button>
+							</Card.Body>
+						</Card>
+					</Col>
+					<Col>
+						<Card style={{ opacity: 0.55 }}>
+							<Card.Body>
+								<Card.Title>Delivery Agent</Card.Title>
+								<Card.Text>Click here if you want to deliver blood.</Card.Text>
+								<Button variant="primary">SIGN UP</Button>
+							</Card.Body>
+						</Card>
+					</Col>
+				</Row>
+				<Particles params={particleParameters()} />
+			</div>
 		</div>
 	);
 };
