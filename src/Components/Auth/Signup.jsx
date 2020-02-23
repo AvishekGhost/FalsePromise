@@ -1,124 +1,111 @@
-import React, { Component } from 'react'
-//add email name pass validation 
+import React, { Component } from "react";
+import { signup } from "./index";
 
+//add email name pass validation
 
 class Signup extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: "",
-      email: "",
-      password: "",
-      error: "",
-      open: false
-    }
-  }
+	constructor() {
+		super();
+		this.state = {
+			name: "",
+			email: "",
+			password: "",
+			error: "",
+			open: false
+		};
+	}
 
+	handleChange = name => event => {
+		this.setState({ error: "" });
+		this.setState({ [name]: event.target.value });
+	};
 
-  handleChange = (name) => (event) => {
-    this.setState({ error: "" })
-    this.setState({ [name]: event.target.value });
-  };
+	clickSubmit = event => {
+		event.preventDefault();
+		const { name, email, password } = this.state;
+		const user = {
+			name,
+			email,
+			password
+		};
+		signup(user).then(data => {
+			if (data.error) this.setState({ error: data.error });
+			else
+				this.setState({
+					name: "",
+					email: "",
+					password: "",
+					error: "",
+					open: true
+				});
+		});
+	};
 
-  clickSubmit = event => {
-    event.preventDefault();
-    const { name, email, password } = this.state;
-    const user = {
-      name,
-      email,
-      password
-    };
-    this.signup(user).then(data => {
-      if (data.error)
-        this.setState({ error: data.error })
-      else
-        this.setState({
-          name: "",
-          email: "",
-          password: "",
-          error: "",
-          open: true
-        })
-    })
-  };
+	signupForm = (name, email, password) => {
+		return (
+			<form>
+				<div className="form-group">
+					<label className="text-muted">Name</label>
+					<input
+						onChange={this.handleChange("name")}
+						type="text"
+						className="form-control"
+						value={name}
+					/>
+				</div>
+				<div className="form-group">
+					<label className="text-muted">Email</label>
+					<input
+						onChange={this.handleChange("email")}
+						type="email"
+						className="form-control"
+						value={email}
+					/>
+				</div>
+				<div className="form-group">
+					<label className="text-muted">Password</label>
+					<input
+						onChange={this.handleChange("password")}
+						type="password"
+						className="form-control"
+						value={password}
+					/>
+				</div>
+				<button
+					onClick={this.clickSubmit}
+					className="btn btn-raised btn-primary"
+				>
+					Sign up
+				</button>
+			</form>
+		);
+	};
 
-  signup = (user) => {
-    return fetch("http://localhost:5000/signup", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(user)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+	render() {
+		const { name, email, password, error, open } = this.state;
 
-  signupForm = (name, email, password) => {
-    return (
-      < form >
-        <div className="form-group">
-          <label className="text-muted">Name</label>
-          <input
-            onChange={this.handleChange("name")}
-            type="text"
-            className="form-control"
-            value={name}
-          />
-        </div>
-        <div className="form-group">
-          <label className="text-muted">Email</label>
-          <input
-            onChange={this.handleChange("email")}
-            type="email"
-            className="form-control"
-            value={email}
-          />
-        </div>
-        <div className="form-group">
-          <label className="text-muted">Password</label>
-          <input
-            onChange={this.handleChange("password")}
-            type="password"
-            className="form-control"
-            value={password}
-          />
-        </div>
-        <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Sign up</button>
-      </form>
-    )
-  }
+		return (
+			<div className="container">
+				<h2 className="mt-5 mb-5">Signup</h2>
 
-  render() {
-    const { name, email, password, error, open } = this.state;
+				<div
+					className="alert alert-primary"
+					style={{ display: error ? "" : "none" }}
+				>
+					{error}
+				</div>
 
-    return (
-      <div className="container">
-        <h2 className="mt-5 mb-5">Signup</h2>
+				{this.signupForm(name, email, password)}
 
-        <div
-          className="alert alert-primary"
-          style={{ display: error ? "" : "none" }}
-        >
-          {error}
-        </div>
-
-        {this.signupForm(name, email, password)}
-
-        <div
-          className="alert alert-info"
-          style={{ display: open ? "" : "none" }}
-        >
-          New Account is Created!!....Please Sign in
-        </div>
-      </div >
-    )
-  }
+				<div
+					className="alert alert-info"
+					style={{ display: open ? "" : "none" }}
+				>
+					New Account is Created!!....Please Sign in
+				</div>
+			</div>
+		);
+	}
 }
 
 export default Signup;

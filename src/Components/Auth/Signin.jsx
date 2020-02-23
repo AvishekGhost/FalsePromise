@@ -1,124 +1,105 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom';
-//add email name pass validation 
-
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { signin, authenticate } from "./index";
+//add email name pass validation
 
 class Signin extends Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
 
-    this.state = {
-      email: "",
-      password: "",
-      error: "",
-      redirectToReferer: false,
-      loading: false
-    }
-  }
+		this.state = {
+			email: "",
+			password: "",
+			error: "",
+			redirectToReferer: false,
+			loading: false
+		};
+	}
 
+	handleChange = name => event => {
+		this.setState({ error: "" });
+		this.setState({ [name]: event.target.value });
+	};
 
-  handleChange = (name) => (event) => {
-    this.setState({ error: "" })
-    this.setState({ [name]: event.target.value });
-  };
+	clickSubmit = event => {
+		event.preventDefault();
+		this.setState({ loading: true });
+		const { email, password } = this.state;
+		const user = {
+			email,
+			password
+		};
+		console.log(user);
+		signin(user).then(data => {
+			if (data.error) this.setState({ error: data.error, loading: false });
+			else {
+				authenticate(data, () => {
+					this.setState({ redirectToReferer: true });
+				});
+			}
+		});
+	};
 
-  clickSubmit = event => {
-    event.preventDefault();
-    this.setState({ loading: true })
-    const { email, password } = this.state;
-    const user = {
-      email,
-      password
-    };
-    console.log(user)
-    this.signin(user).then(data => {
-      if (data.error)
-        this.setState({ error: data.error, loading: false })
-      else {
-        this.authenticate(data, () => {
-          this.setState({ redirectToReferer: true })
-        });
-      }
-    })
-  };
+	signinForm = (email, password) => {
+		return (
+			<form>
+				<div className="form-group">
+					<label className="text-muted">Email</label>
+					<input
+						onChange={this.handleChange("email")}
+						type="email"
+						className="form-control"
+						value={email}
+					/>
+				</div>
+				<div className="form-group">
+					<label className="text-muted">Password</label>
+					<input
+						onChange={this.handleChange("password")}
+						type="password"
+						className="form-control"
+						value={password}
+					/>
+				</div>
+				<button
+					onClick={this.clickSubmit}
+					className="btn btn-raised btn-primary"
+				>
+					Sign in
+				</button>
+			</form>
+		);
+	};
 
-  signin = (user) => {
-    return fetch("http://localhost:5000/signin", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(user)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+	render() {
+		const { email, password, error, redirectToReferer, loading } = this.state;
 
-  authenticate(jwt, next) {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("jwt", JSON.stringify(jwt))
-      next();
-    }
-  }
+		if (redirectToReferer) {
+			return <Redirect to="/" />;
+		}
 
-  signinForm = (email, password) => {
-    return (
-      < form >
-        <div className="form-group">
-          <label className="text-muted">Email</label>
-          <input
-            onChange={this.handleChange("email")}
-            type="email"
-            className="form-control"
-            value={email}
-          />
-        </div>
-        <div className="form-group">
-          <label className="text-muted">Password</label>
-          <input
-            onChange={this.handleChange("password")}
-            type="password"
-            className="form-control"
-            value={password}
-          />
-        </div>
-        <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Sign up</button>
-      </form>
-    )
-  }
+		return (
+			<div className="container">
+				<h2 className="mt-5 mb-5">Sign in</h2>
 
-  render() {
-    const { email, password, error, redirectToReferer, loading } = this.state;
+				<div
+					className="alert alert-primary"
+					style={{ display: error ? "" : "none" }}
+				>
+					{error}
+				</div>
 
-    if (redirectToReferer) {
-      return <Redirect to="/" />
-    }
-
-    return (
-      <div className="container">
-        <h2 className="mt-5 mb-5">Sign in</h2>
-
-        <div
-          className="alert alert-primary"
-          style={{ display: error ? "" : "none" }}
-        >
-          {error}
-        </div>
-
-        {loading ? (<div className="jumbotron text-center">
-          <h2>Loading...</h2>
-        </div>) : ("")}
-        {this.signinForm(email, password)}
-
-
-      </div >
-    )
-  }
+				{loading ? (
+					<div className="jumbotron text-center">
+						<h2>Loading...</h2>
+					</div>
+				) : (
+					""
+				)}
+				{this.signinForm(email, password)}
+			</div>
+		);
+	}
 }
 
 export default Signin;
