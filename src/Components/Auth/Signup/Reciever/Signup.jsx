@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { signup } from "./index";
-import Particles from "react-particles-js";
+import { signup } from "../../index";
+import ParticleContainer from '/home/arnab099/Codes/FalsePromise/src/Components/Home/ParticleContainer';
 //add email name pass validation
 
 class Signup extends Component {
@@ -22,59 +22,6 @@ class Signup extends Component {
 		this.setState({ [name]: event.target.value });
 	};
 
-	particleParams = () => {
-		return {
-			particles: {
-				number: {
-					value: 160,
-					density: {
-						enable: false
-					}
-				},
-				size: {
-					value: 3,
-					random: true,
-					anim: {
-						speed: 4,
-						size_min: 0.3
-					}
-				},
-				line_linked: {
-					enable: false
-				},
-				move: {
-					random: true,
-					speed: 1,
-					direction: "top",
-					out_mode: "out"
-				}
-			},
-			interactivity: {
-				events: {
-					onhover: {
-						enable: true,
-						mode: "bubble"
-					},
-					onclick: {
-						enable: true,
-						mode: "repulse"
-					}
-				},
-				modes: {
-					bubble: {
-						distance: 250,
-						duration: 2,
-						size: 0,
-						opacity: 0
-					},
-					repulse: {
-						distance: 400,
-						duration: 4
-					}
-				}
-			}
-		};
-	};
 
 	clickSubmit = event => {
 		event.preventDefault();
@@ -164,6 +111,7 @@ class Signup extends Component {
 
 		return (
 			<div className="container">
+				<ParticleContainer />
 				<h2 className="mt-5 mb-5">Signup</h2>
 
 				<div
@@ -181,7 +129,6 @@ class Signup extends Component {
 				>
 					New Account is Created!!....Please Sign in
 				</div>
-				<Particles params={this.particleParams()} />
 			</div>
 		);
 	}
