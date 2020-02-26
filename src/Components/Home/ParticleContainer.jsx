@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import Particles from 'react-particles-js';
-import classes from './Home.module.css';
+import React, { Component } from "react";
+import Particles from "react-particles-js";
 
 const particleParameters = () => {
 	return {
@@ -57,15 +56,18 @@ const particleParameters = () => {
 };
 
 class ParticleContainer extends Component {
-    render() {
-        return (
-            <Particles params={particleParameters()} style={
-                {position: 'absolute',
-                width: '100%',
-                height: '200%',
-                zIndex: '-1'}
-            } />
-        );
-    }
+	render() {
+		return (
+			<Particles
+				params={particleParameters()}
+				style={{
+					position: "absolute",
+					width: "100%",
+					height: "200%",
+					zIndex: "-1"
+				}}
+			/>
+		);
+	}
 }
 export default ParticleContainer;
