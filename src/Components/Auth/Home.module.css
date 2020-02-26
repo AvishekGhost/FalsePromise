@@ -1,0 +1,37 @@
+.bcg {
+	background: #200122; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to right,
+		#6f0000,
+		#200122
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to right,
+		#cc3737,
+		#200122
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.op {
+	opacity: 0.55;
+}
+
+.pageContainer {
+	margin-left: 1vw;
+	margin-right: 1vw;
+	margin-top: 1vw;
+	display: flex;
+	flex-direction: column;
+}
+
+.page {
+	display: flex;
+	flex-direction: row;
+}
+
+.map {
+	width: 66vw;
+	height: 100vh;
+	margin-left: 1vw;
+	margin-right: 1vw;
+	margin-top: 1vw;
+}
