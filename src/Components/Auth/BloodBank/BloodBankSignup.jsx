@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { signup } from "./index";
-
+import classes from './BloodBankmodule.css';
 //add email name pass validation
 
-class DriverSignup extends Component {
+class BloodBankSignup extends Component {
 	constructor() {
 		super();
 		this.state = {
 			name: "",
 			phone: "",
 			address: "",
+			bloodTypes: {'A+':0,'A-':0,'B+':0,'B-':0,'O+':0,'O-':0,'AB+':0,'AB-':0},
 			latitude: 12,
 			longitude: 21,
 			email: "",
@@ -18,7 +19,6 @@ class DriverSignup extends Component {
 			open: false
 		};
 	}
-
 	handleChange = name => event => {
 		this.setState({ error: "" });
 		this.setState({ [name]: event.target.value });
@@ -26,26 +26,35 @@ class DriverSignup extends Component {
 
 	clickSubmit = event => {
 		event.preventDefault();
-		const {
+		let {
 			name,
 			phone,
 			address,
+			bloodTypes,
 			latitude,
 			longitude,
 			email,
 			password
 		} = this.state;
 
-		const user = {
+		let user = {
 			name,
 			phone,
 			address,
+			bloodTypes,
 			latitude,
 			longitude,
 			email,
 			password
 		};
-
+		bloodTypes['A+'] = document.getElementById('a+').value;
+		bloodTypes['A-'] = document.getElementById('a-').value;
+		bloodTypes['B+'] = document.getElementById('b+').value;
+		bloodTypes['B-'] = document.getElementById('b-').value;
+		bloodTypes['O+'] = document.getElementById('o+').value;
+		bloodTypes['O-'] = document.getElementById('o-').value;
+		bloodTypes['AB+'] = document.getElementById('ab+').value;
+		bloodTypes['AB-'] = document.getElementById('ab-').value;
 		signup(user).then(data => {
 			if (data.error) this.setState({ error: data.error });
 			else
@@ -53,6 +62,7 @@ class DriverSignup extends Component {
 					name: "",
 					phone: "",
 					address: "",
+					bloodTypes: {'A+':0,'A-':0,'B+':0,'B-':0,'O+':0,'O-':0,'AB+':0,'AB-':0},
 					email: "",
 					password: "",
 					error: "",
@@ -61,7 +71,7 @@ class DriverSignup extends Component {
 		});
 	};
 
-	signupForm = (name, phone, address, email, password) => {
+	signupForm = (name, phone, address, bloodTypes, email, password) => {
 		return (
 			<form>
 				<div className="form-group">
@@ -93,6 +103,17 @@ class DriverSignup extends Component {
 					/>
 				</div>
 				<div className="form-group">
+					<label className="text-muted">Blood Group and Quantity</label><br/>
+					A+<input type='number' id="a+" /><br/><br/>
+					A-<input type='number' id="a-"/><br/><br/>
+					B+<input type='number' id="b+"/><br/><br/>
+					B-<input type='number' id="b-"/><br/><br/>
+					O+<input type='number' id="o+"/><br/><br/>
+					O-<input type='number' id="o-"/><br/><br/>
+					AB+<input type='number' id="ab+"/><br/><br/>
+					AB-<input type='number' id="ab-"/><br/><br/>
+				</div>
+				<div className="form-group">
 					<label className="text-muted">Email</label>
 					<input
 						onChange={this.handleChange("email")}
@@ -121,11 +142,11 @@ class DriverSignup extends Component {
 	};
 
 	render() {
-		const { name, phone, address, email, password, error, open } = this.state;
+		const { name, phone, address, bloodTypes, email, password, error, open } = this.state;
 
 		return (
 			<div className="container">
-				<h2 className="mt-5 mb-5">Driver Signup</h2>
+				<h2 className="mt-5 mb-5">Blood Bank Signup</h2>
 
 				<div
 					className="alert alert-primary"
@@ -134,7 +155,7 @@ class DriverSignup extends Component {
 					{error}
 				</div>
 
-				{this.signupForm(name, phone, address, email, password)}
+				{this.signupForm(name, phone, address, bloodTypes, email, password)}
 
 				<div
 					className="alert alert-info"
@@ -147,4 +168,4 @@ class DriverSignup extends Component {
 	}
 }
 
-export default DriverSignup;
+export default BloodBankSignup;

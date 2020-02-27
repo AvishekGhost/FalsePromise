@@ -79,12 +79,21 @@ class DonorSignup extends Component {
 				</div>
 				<div className="form-group">
 					<label className="text-muted">Blood Group</label>
-					<input
+					<select
 						onChange={this.handleChange("blood")}
-						type="text"
 						className="form-control"
 						value={blood}
-					/>
+					>
+						<option value="Select">Select</option>
+						<option value="A+">A+</option>
+						<option value="A-">A-</option>
+						<option value="B+">B+</option>
+						<option value="B-">B-</option>
+						<option value="O+">O+</option>
+						<option value="O-">O-</option>
+						<option value="AB+">AB+</option>
+						<option value="AB-">AB-</option>
+					</select>
 				</div>
 				<div className="form-group">
 					<label className="text-muted">phone</label>

@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const DisplayMapFC = () => {
 	// Create a reference to the HTML element we want to put the map on
 	const mapRef = React.useRef(null);
-
+	const [lat, setLat] = useState(12);
+	const [lon, setLon] = useState(12);
+	const [zoomIn, setZoomIn] = useState(4);
+	
+	const getLoc = ()=>{
+		setLat(22.5713);
+		setLon(88.4206);
+	}
+	const increaseZoom =( )=>{
+		let temp = zoomIn;
+		temp++;
+		setZoomIn(temp);
+	}
 	/**
 	 * Create the map instane
 	 * While `useEffect` could also be used here, `useLayoutEffect` will render
@@ -19,8 +31,8 @@ export const DisplayMapFC = () => {
 		});
 		const defaultLayers = platform.createDefaultLayers();
 		const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-			center: { lat: 50, lng: 50 },
-			zoom: 4,
+			center: { lat: lat, lng: lon },
+			zoom: zoomIn,
 			pixelRatio: window.devicePixelRatio || 1
 		});
 
@@ -33,7 +45,7 @@ export const DisplayMapFC = () => {
 		return () => {
 			hMap.dispose();
 		};
-	}, [mapRef]); // This will run this hook every time this ref is updated
+	}, [mapRef, lat, lon, zoomIn]); // This will run this hook every time this ref is updated
 
 	return (
 		<>
@@ -42,6 +54,8 @@ export const DisplayMapFC = () => {
 				ref={mapRef}
 				style={{ height: "90vh", borderRadius: "10px" }}
 			/>
+			<button onClick={getLoc}>change</button> 
+			<button onClick={increaseZoom}>zoom in</button> 
 		</>
 	);
 };
