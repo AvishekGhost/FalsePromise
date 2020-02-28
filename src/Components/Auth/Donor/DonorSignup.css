@@ -48,3 +48,14 @@
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 	  monospace;
   }
+  .align {
+	  text-align: center;
+  }
+  .name {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  align-content: center;
+	  align-self: center;
+	  justify-content: space-around;
+  }

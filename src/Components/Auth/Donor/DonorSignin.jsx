@@ -4,7 +4,7 @@ import { signin, authenticate } from "./index";
 import Particles from "react-particles-js";
 
 class DonorSignin extends Component {
-	constructor() {
+	constructor(props) {
 		super();
 
 		this.state = {
@@ -12,10 +12,15 @@ class DonorSignin extends Component {
 			password: "",
 			error: "",
 			redirectToReferer: false,
-			loading: false
+			loading: false,
+			datas: {}
 		};
+		this.returnData = this.returnData.bind(this);
 	}
-
+	returnData(){
+		console.log("Nigga");
+		return this.state.datas;
+	}
 	particleParams = () => {
 		return {
 			particles: {
@@ -85,9 +90,11 @@ class DonorSignin extends Component {
 		};
 		console.log(user);
 		signin(user).then(data => {
+
 			if (data.error) this.setState({ error: data.error, loading: false });
 			else {
 				authenticate(data, () => {
+					this.setState({ datas: data});
 					this.setState({ redirectToReferer: true });
 				});
 			}
