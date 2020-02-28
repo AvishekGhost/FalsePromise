@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { signin, authenticate } from "./index";
-import Particles from "react-particles-js";
+import Particles from '../../Home/ParticleContainer'
+import classes from './BloodBank.module.css'
 
 class BloodBankSignin extends Component {
 	constructor() {
@@ -15,60 +16,6 @@ class BloodBankSignin extends Component {
 			loading: false
 		};
 	}
-
-	particleParams = () => {
-		return {
-			particles: {
-				number: {
-					value: 160,
-					density: {
-						enable: false
-					}
-				},
-				size: {
-					value: 3,
-					random: true,
-					anim: {
-						speed: 4,
-						size_min: 0.3
-					}
-				},
-				line_linked: {
-					enable: false
-				},
-				move: {
-					random: true,
-					speed: 1,
-					direction: "top",
-					out_mode: "out"
-				}
-			},
-			interactivity: {
-				events: {
-					onhover: {
-						enable: true,
-						mode: "bubble"
-					},
-					onclick: {
-						enable: true,
-						mode: "repulse"
-					}
-				},
-				modes: {
-					bubble: {
-						distance: 250,
-						duration: 2,
-						size: 0,
-						opacity: 0
-					},
-					repulse: {
-						distance: 400,
-						duration: 4
-					}
-				}
-			}
-		};
-	};
 
 	handleChange = name => event => {
 		this.setState({ error: "" });
@@ -131,9 +78,10 @@ class BloodBankSignin extends Component {
 		if (redirectToReferer) {
 			return <Redirect to="/bloodbank" />;
 		}
-
+		document.body.className = classes.bcg;
 		return (
 			<div className="container">
+				<Particles />
 				<h2 className="mt-5 mb-5">Sign in</h2>
 
 				<div
@@ -151,7 +99,6 @@ class BloodBankSignin extends Component {
 					""
 				)}
 				{this.signinForm(email, password)}
-				<Particles params={this.particleParams()} />
 			</div>
 		);
 	}

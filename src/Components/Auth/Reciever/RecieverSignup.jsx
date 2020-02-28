@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { signup } from "./index";
-
+import classes from './Reciever.module.css';
+import Particles from '../../Home/ParticleContainer';
 //add email name pass validation
 
 class RecieverSignup extends Component {
@@ -143,9 +144,10 @@ class RecieverSignup extends Component {
 			error,
 			open
 		} = this.state;
-
+		document.body.className = classes.bcg;
 		return (
 			<div className="container">
+				<Particles />
 				<h2 className="mt-5 mb-5">Reciever Signup</h2>
 
 				<div

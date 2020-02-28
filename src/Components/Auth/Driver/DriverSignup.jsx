@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { signup } from "./index";
-
+import Particles from '../../Home/ParticleContainer';
+import classes from './Driver.module.css';
 //add email name pass validation
 
 class DriverSignup extends Component {
@@ -122,9 +123,10 @@ class DriverSignup extends Component {
 
 	render() {
 		const { name, phone, address, email, password, error, open } = this.state;
-
+		document.body.className = classes.bcg;
 		return (
 			<div className="container">
+				<Particles />
 				<h2 className="mt-5 mb-5">Driver Signup</h2>
 
 				<div

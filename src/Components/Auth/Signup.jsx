@@ -1,11 +1,14 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import Particles from '../Home/ParticleContainer';
+import classes from './Signin.module.css';
 const Signup = () => {
+	document.body.className = classes.bcg;
 	return (
 		<>
 			<div style={{ margin: "5vw" }}>
+				<Particles />
 				<div className="jumbotron" style={{ opacity: 0.55 }}>
 					<h1>Sign Up page</h1>
 				</div>

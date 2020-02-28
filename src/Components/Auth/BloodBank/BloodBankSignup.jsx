@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { signup } from "./index";
-import classes from './BloodBankmodule.css';
+import classes from './BloodBank.module.css';
+import Particles from '../../Home/ParticleContainer'
 //add email name pass validation
 
 class BloodBankSignup extends Component {
@@ -143,9 +144,10 @@ class BloodBankSignup extends Component {
 
 	render() {
 		const { name, phone, address, bloodTypes, email, password, error, open } = this.state;
-
+		document.body.className = classes.bcg;
 		return (
 			<div className="container">
+				<Particles />
 				<h2 className="mt-5 mb-5">Blood Bank Signup</h2>
 
 				<div

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { isAuthenticated } from "./index";
-import classes from './DonorSignup.css'
+import Particles from '../../Home/ParticleContainer'
+import classes from './DonorSignup.module.css'
 import {DisplayMapFC} from './DisplayMapFC';
 const Donor = () => {
 
@@ -13,6 +14,7 @@ const Donor = () => {
   //useEffect(() => {});
   return (
     <div>
+	<Particles />
       <h1>Donor</h1>
 	  <div className={classes.name}>
       <div className={classes.name}>Welcome, {isAuthenticated().donor.name}</div>
