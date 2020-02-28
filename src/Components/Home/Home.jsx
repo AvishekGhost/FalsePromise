@@ -1,11 +1,10 @@
 import React from "react";
 import classes from "./Home.module.css";
-import {Layout} from 'antd';
-import {Link} from 'react-router-dom';
+import { Layout } from "antd";
+import { Link } from "react-router-dom";
 import { Row, Col, Card } from "react-bootstrap";
 import { DisplayMapFC } from "./DisplayMapFC";
-import ParticleContainer from './ParticleContainer';
-
+import ParticleContainer from "./ParticleContainer";
 
 const Home = () => {
 	document.body.className = classes.bcg;
@@ -14,7 +13,7 @@ const Home = () => {
 			<ParticleContainer />
 			<div className={classes.page}>
 				<div className={classes.map}>
-					<DisplayMapFC className = {classes.op}/>
+					<DisplayMapFC className={classes.op} />
 					<ParticleContainer />
 				</div>
 				<div className={classes.pageContainer} style={{ width: "33vw" }}>
@@ -22,10 +21,11 @@ const Home = () => {
 						<h1>Home</h1>
 						<p className="lead">
 							Blood Bank donation system can collect blood from many donators in
-							short from various sources and distribute that blood to needy people
-							who require blood. Online Blood Bank management system is to provide
-							services for the people who are in need of blood by getting help
-							from the donors who are interested in donating blood for the people.
+							short from various sources and distribute that blood to needy
+							people who require blood. Online Blood Bank management system is
+							to provide services for the people who are in need of blood by
+							getting help from the donors who are interested in donating blood
+							for the people.
 						</p>
 					</div>
 					<Row>
@@ -33,8 +33,8 @@ const Home = () => {
 							<Card style={{ opacity: 0.55 }}>
 								<Card.Body>
 									<Card.Title>Donate Blood</Card.Title>
-									<Card.Text>Click here to donate blood.</Card.Text>
-									<Link to = "/donor">SIGN UP</Link>	
+									<Card.Text>Join us</Card.Text>
+									<Link to="/signup">SIGN UP</Link>
 								</Card.Body>
 							</Card>
 						</Col>
@@ -42,30 +42,8 @@ const Home = () => {
 							<Card style={{ opacity: 0.55 }}>
 								<Card.Body>
 									<Card.Title>Need Blood?</Card.Title>
-									<Card.Text>Click here to accept blood.</Card.Text>
-									<Link to="/donor">SIGN UP</Link>
-								</Card.Body>
-							</Card>
-						</Col>
-					</Row>
-					<br />
-					<Row>
-						<ParticleContainer />
-						<Col>
-							<Card style={{ opacity: 0.55 }}>
-								<Card.Body>
-									<Card.Title>Blood Bank</Card.Title>
-									<Card.Text>Click here to register your Blood Bank.</Card.Text>
-									<Link to="/signup">SIGN UP</Link>
-								</Card.Body>
-							</Card>
-						</Col>
-						<Col>
-							<Card style={{ opacity: 0.55 }}>
-								<Card.Body>
-									<Card.Title>Delivery Agent</Card.Title>
-									<Card.Text>Click here for blood delivery.</Card.Text>
-									<Link to="/signup">SIGN UP</Link>
+									<Card.Text>Already have an Account ?</Card.Text>
+									<Link to="/signin">SIGN in</Link>
 								</Card.Body>
 							</Card>
 						</Col>

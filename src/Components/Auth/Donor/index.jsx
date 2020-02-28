@@ -64,3 +64,28 @@ export const isAuthenticated = () => {
 		return JSON.parse(localStorage.getItem("jwt"));
 	else return false;
 };
+
+
+export const getBloodBanks = ()=>{
+	return fetch("http://localhost:5000/bloodbank/getbloodbank", {
+		method: "GET",
+	})
+		.then(response => {
+			return response.json();
+		})
+		.catch(err => {
+			console.log(err);
+		});
+}
+
+export const getReceivers = ()=>{
+	return fetch("http://localhost:5000/receiver/getreceivers", {
+		method: "GET",
+	})
+		.then(response => {
+			return response.json();
+		})
+		.catch(err => {
+			console.log(err);
+		});
+}
