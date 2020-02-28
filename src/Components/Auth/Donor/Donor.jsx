@@ -10,7 +10,7 @@ const Donor = () => {
 	const [Longitude, setLongitude] = useState(100);
 	const center = { lat: 0, lng: 0 };
 	
-
+	document.body.className = classes.bcg;
   //useEffect(() => {});
   return (
     <div>

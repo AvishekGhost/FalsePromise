@@ -39,11 +39,11 @@ export const DisplayMapFC = () => {
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
-    // const svgMarkup = (<svg width="100">addsome svg</svg>);
-    // const customIcon = new H.map.Icon(svgMarkup);
+    const svgMarkup = require('./marker.svg');
+    const customIcon = new H.map.Icon(svgMarkup);
     const donorLocation = new H.map.Marker(
       { lat: lat, lng: lon },
-    //   { icon: customIcon }
+      { icon: customIcon }
     );
 
     hMap.addObject(donorLocation);
