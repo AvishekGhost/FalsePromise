@@ -47,6 +47,8 @@ const Donor = () => {
           arr.push(JSON.parse(JSON.stringify(data[i])));
         }
         setBloodBank_Data(arr);
+        setNearbyBloodBankLatitude(data[1].latitude);
+        setNearbyBloodBankLongitude(data[1].longitude);
       }
     });
 
@@ -88,26 +90,29 @@ const Donor = () => {
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
 
     //console.log(behavior, ui);
+    if (nearbyBloodBankLatitude !== null && nearbyBloodBankLongitude !== null) {
+      const request = {
+        mode: "fastest;car",
+        waypoint0: `geo!${donorCurrentLatitude},${donorCurrentLongitude}`,
+        waypoint1: `geo!${nearbyBloodBankLatitude},${nearbyBloodBankLongitude}`,
+        representation: "display"
+      };
+      console.log(nearbyBloodBankLatitude);
+      const router = platform.getRoutingService();
+      router.calculateRoute(request, response => {
+        const shape = response.response.route[0].shape.map(x => x.split(","));
+        const linestring = new H.geo.LineString();
+        shape.forEach(s => linestring.pushLatLngAlt(s[0], s[1]));
+        const routeLine = new H.map.Polyline(linestring, {
+          style: { strokeColor: "red", lineWidth: 3 }
+        });
 
-    const request = {
-      mode: "fastest;car",
-      waypoint0: `geo!${donorCurrentLatitude},${donorCurrentLongitude}`,
-      waypoint1: `geo!${nearbyBloodBankLatitude},${nearbyBloodBankLongitude}`,
-      representation: "display"
-    };
-
-    const router = platform.getRoutingService();
-    router.calculateRoute(request, response => {
-      const shape = response.response.route[0].shape.map(x => x.split(","));
-      const linestring = new H.geo.LineString();
-      shape.forEach(s => linestring.pushLatLngAlt(s[0], s[1]));
-      const routeLine = new H.map.Polyline(linestring, {
-        style: { strokeColor: "red", lineWidth: 3 }
+        hMap.addObject(routeLine);
+        hMap
+          .getViewModel()
+          .setLookAtData({ bounds: routeLine.getBoundingBox() });
       });
-
-      hMap.addObject(routeLine);
-      hMap.getViewModel().setLookAtData({ bounds: routeLine.getBoundingBox() });
-    });
+    }
 
     //Donor/current user Marker
     const customIcon = new H.map.Icon(BlueMarker);
