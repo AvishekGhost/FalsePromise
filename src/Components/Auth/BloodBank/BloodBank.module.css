@@ -1,16 +1,112 @@
-.show {
-    display: inline;
+.p {
+  color: rgba(255, 0, 0, 0.767);
+  background: white;
+  font-size: 40px;
+  text-align: center;
+  border: 1px solid white;
+  margin-top: 125px;
+  margin-bottom: 50px;
+  margin-right: 200px;
+  margin-left: 200px;
 }
+
+.button {
+  color: rgba(255, 0, 0, 0.767);
+  background-color: white;
+}
+
+.h1 {
+  color: white;
+  background: rgba(255, 0, 0, 0.767);
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-right: 250px;
+  margin-left: 250px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.h2 {
+  color: white;
+  background: rgba(255, 0, 0, 0.767);
+  font-size: 30px;
+  text-align: center;
+}
+
+.h3 {
+  color: white;
+  background: rgba(255, 0, 0, 0.767);
+  font-size: 30px;
+  text-align: center;
+}
+
+.body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.align {
+  text-align: center;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  justify-content: space-around;
+}
+
 .bcg {
-	background: #200122; /* fallback for old browsers */
-	background: -webkit-linear-gradient(
-		to right,
-		#6f0000,
-		#200122
-	); /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(
-		to right,
-		#cc3737,
-		#200122
-	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #200122;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6f0000, #200122);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #cc3737, #200122);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.mapInfoContainer {
+  display: flex;
+  flex-direction: row;
+  background-color: azure;
+  padding: 3px;
+}
+.mapContainer {
+  margin: 1vw;
+  width: 60vw;
+}
+.donorPageContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.InfoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.arrayContainer {
+  width: 33vw;
+  height: 83.5vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  background-color: aliceblue;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }

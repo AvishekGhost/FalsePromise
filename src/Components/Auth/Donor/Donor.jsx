@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { isAuthenticated, getBloodBanks, getReceivers } from "./index";
+import { isAuthenticated, getBloodBanks, getReceivers, getTemp } from "./index";
 import Particles from "../../Home/ParticleContainer";
 import classes from "./DonorSignup.module.css";
 import RedMarker from "../../Assets/RedMarker.svg";
 import BlueMarker from "../../Assets/BlueMarker.svg";
 import GreenMarker from "../../Assets/GreenMarker.svg";
+import { Card, Col, Row, Text, Button } from "react-bootstrap";
+// import HereMap from "./Map/HereMap";
+import { DisplayMapFC } from "./DisplayMapFC";
 
 const Donor = () => {
-  const mapRef = useRef();
   const [donorCurrentLatitude, setdonorCurrentLatitude] = useState(12);
   const [donorCurrentLongitude, setdonorCurrentLongitude] = useState(12);
 
@@ -23,8 +25,6 @@ const Donor = () => {
   const [Receiver_Data, setReceiver_Data] = useState([]);
 
   const [error, setError] = useState(null);
-  const [bloodBank_Index, setBloodbank_Index] = useState(null);
-  const [receiver_Index, setReceiver_Index] = useState(null);
 
   const getLoc = () => {
     if (navigator.geolocation) {
@@ -39,14 +39,19 @@ const Donor = () => {
   };
 
   useEffect(() => {
+    console.log(BloodBank_Data);
+  }, [BloodBank_Data]);
+
+  useEffect(() => {
     getBloodBanks().then(data => {
       if (data.error) setError(data.error);
       else {
         let arr = [];
         for (let i in data) {
-          arr.push(JSON.parse(JSON.stringify(data[i])));
+          arr.push(data[i]);
         }
         setBloodBank_Data(arr);
+
         setNearbyBloodBankLatitude(data[1].latitude);
         setNearbyBloodBankLongitude(data[1].longitude);
       }
@@ -57,106 +62,30 @@ const Donor = () => {
       else {
         let arr = [];
         for (let i in data) {
-          arr.push(JSON.parse(JSON.stringify(data[i])));
+          arr.push(JSON.stringify(data[i]));
         }
-
+        //console.log(arr);
         setReceiver_Data(arr);
 
         setNearbyReceiverLatitude(data[1].latitude);
-        console.log(data[1].latitude);
         setNearbyReceiverLongitude(data[1].longitude);
-        console.log(data[1].longitude);
       }
     });
 
     getLoc();
   }, []);
 
-  React.useLayoutEffect(() => {
-    if (!mapRef.current) return;
-    const H = window.H;
-    const platform = new H.service.Platform({
-      apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0"
-    });
-    const defaultLayers = platform.createDefaultLayers();
-    const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-      center: { lat: donorCurrentLatitude, lng: donorCurrentLongitude },
-      zoom: 9,
-      pixelRatio: window.devicePixelRatio || 1
-    });
-
-    const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
-
-    const ui = H.ui.UI.createDefault(hMap, defaultLayers);
-
-    //console.log(behavior, ui);
-    if (nearbyBloodBankLatitude !== null && nearbyBloodBankLongitude !== null) {
-      const request = {
-        mode: "fastest;car",
-        waypoint0: `geo!${donorCurrentLatitude},${donorCurrentLongitude}`,
-        waypoint1: `geo!${nearbyBloodBankLatitude},${nearbyBloodBankLongitude}`,
-        representation: "display"
-      };
-      console.log(nearbyBloodBankLatitude);
-      const router = platform.getRoutingService();
-      router.calculateRoute(request, response => {
-        const shape = response.response.route[0].shape.map(x => x.split(","));
-        const linestring = new H.geo.LineString();
-        shape.forEach(s => linestring.pushLatLngAlt(s[0], s[1]));
-        const routeLine = new H.map.Polyline(linestring, {
-          style: { strokeColor: "red", lineWidth: 3 }
-        });
-
-        hMap.addObject(routeLine);
-        hMap
-          .getViewModel()
-          .setLookAtData({ bounds: routeLine.getBoundingBox() });
-      });
-    }
-
-    //Donor/current user Marker
-    const customIcon = new H.map.Icon(BlueMarker);
-    const donorLocation = new H.map.Marker(
-      { lat: donorCurrentLatitude, lng: donorCurrentLongitude },
-      { icon: customIcon }
-    );
-
-    //bloodbank marker
-    const bloodbankMarkerIcon = new H.map.Icon(RedMarker);
-    const bloodbankMarker = new H.map.Marker(
-      { lat: nearbyBloodBankLatitude, lng: nearbyBloodBankLongitude },
-      { icon: bloodbankMarkerIcon }
-    );
-    hMap.addObject(bloodbankMarker);
-
-    //reciever marker
-    const recieverMarkerIcon = new H.map.Icon(GreenMarker);
-    const recieverMarker = new H.map.Marker(
-      { lat: 22.598, lng: 88.3725 },
-      { icon: recieverMarkerIcon }
-    );
-
-    hMap.addObject(donorLocation);
-
-    hMap.addObject(recieverMarker);
-
-    return () => {
-      hMap.dispose();
-    };
-  }, [
-    mapRef,
-    donorCurrentLatitude,
-    donorCurrentLongitude,
-    nearbyBloodBankLatitude,
-    nearbyBloodBankLongitude
-  ]);
-
   document.body.className = classes.bcg;
 
   const MapContainer = () => {
     return (
       <div className={classes.mapContainer}>
-        <div className="map" ref={mapRef} style={{ height: "74vh" }} />
+        <DisplayMapFC
+          currentLatitude={donorCurrentLatitude}
+          currentLongitude={donorCurrentLongitude}
+          nearLatitude={nearbyBloodBankLatitude}
+          nearLongitude={nearbyBloodBankLongitude}
+        />
         <div>
           <div className={classes.mapInfoContainer}>
             <img src={BlueMarker} alt="" height="50px" width="50px" />
@@ -175,33 +104,12 @@ const Donor = () => {
     );
   };
 
-  const gg1 = () => {
-    console.log("BBBS");
-    console.log(BloodBank_Data);
-  };
-
-  const renderNearbyBloodBanks = () => {
-    if (BloodBank_Data) {
-      return (
-        <div>
-          <h2>Blood {gg1()}</h2>
-        </div>
-      );
-    }
-  };
-
-  const gg = () => {
-    console.log("rec");
-    console.log(Receiver_Data);
-  };
-  const renderNearbyRecievers = () => {
-    if (Receiver_Data) {
-      return (
-        <div>
-          <h2>Rec {gg()}</h2>
-        </div>
-      );
-    }
+  const setLocation = (lat, lon) => {
+    console.log("called");
+    setNearbyBloodBankLatitude(lat);
+    console.log(nearbyBloodBankLatitude);
+    setNearbyBloodBankLongitude(lon);
+    // MapContainer();
   };
 
   return (
@@ -222,10 +130,28 @@ const Donor = () => {
             </h2>
             <div className={classes.InfoContainer}>
               <div className={classes.arrayContainer}>
-                {renderNearbyBloodBanks()}
+                {BloodBank_Data.map((bloodbank, _id) => {
+                  return (
+                    <div>
+                      <Card>
+                        <Card.Text>{bloodbank.name}</Card.Text>
+                        <Card.Text>{bloodbank.address}</Card.Text>
+                        <Card.Text>{bloodbank.phone}</Card.Text>
+                        <Card.Text>{bloodbank.bloodTypes["A+"]}</Card.Text>
+                        <button
+                          onClick={event =>
+                            setLocation(bloodbank.latitude, bloodbank.longitude)
+                          }
+                        >
+                          GG
+                        </button>
+                      </Card>
+                    </div>
+                  );
+                })}
               </div>
               <div className={classes.arrayContainer}>
-                {renderNearbyRecievers()}
+                {/* {renderNearbyRecievers()} */}
               </div>
             </div>
           </div>
