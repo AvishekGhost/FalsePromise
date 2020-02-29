@@ -8,21 +8,30 @@ import GreenMarker from "../../Assets/GreenMarker.svg";
 
 const Donor = () => {
   const mapRef = useRef();
-  const [currentLatitude, setCurrentLatitude] = useState(12);
-  const [currentLongitude, setCurrentLongitude] = useState(12);
-  const [nearbyLatitude, setNearbyLatitude] = useState(null);
-  const [nearbyLongitude, setNearbyLongitude] = useState(null);
-  const [BloodBank_Data, setBloodBank_Data] = useState(null);
-  const [Receiver_Data, setReceiver_Data] = useState(null);
+  const [donorCurrentLatitude, setdonorCurrentLatitude] = useState(12);
+  const [donorCurrentLongitude, setdonorCurrentLongitude] = useState(12);
+
+  const [nearbyBloodBankLatitude, setNearbyBloodBankLatitude] = useState(null);
+  const [nearbyBloodBankLongitude, setNearbyBloodBankLongitude] = useState(
+    null
+  );
+
+  const [nearbyReceiverLongitude, setNearbyReceiverLongitude] = useState(null);
+  const [nearbyReceiverLatitude, setNearbyReceiverLatitude] = useState(null);
+
+  const [BloodBank_Data, setBloodBank_Data] = useState([]);
+  const [Receiver_Data, setReceiver_Data] = useState([]);
+
   const [error, setError] = useState(null);
   const [bloodBank_Index, setBloodbank_Index] = useState(null);
+  const [receiver_Index, setReceiver_Index] = useState(null);
 
   const getLoc = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          setCurrentLatitude(position.coords.latitude);
-          setCurrentLongitude(position.coords.longitude);
+          setdonorCurrentLatitude(position.coords.latitude);
+          setdonorCurrentLongitude(position.coords.longitude);
         },
         error => this.setState(console.log(error))
       );
@@ -37,8 +46,7 @@ const Donor = () => {
         for (let i in data) {
           arr.push(JSON.parse(JSON.stringify(data[i])));
         }
-        console.log(arr);
-        setBloodBank_Data(...arr);
+        setBloodBank_Data(arr);
       }
     });
 
@@ -50,11 +58,11 @@ const Donor = () => {
           arr.push(JSON.parse(JSON.stringify(data[i])));
         }
 
-        setReceiver_Data(...arr);
+        setReceiver_Data(arr);
 
-        setNearbyLatitude(data[1].latitude);
+        setNearbyReceiverLatitude(data[1].latitude);
         console.log(data[1].latitude);
-        setNearbyLongitude(data[1].longitude);
+        setNearbyReceiverLongitude(data[1].longitude);
         console.log(data[1].longitude);
       }
     });
@@ -70,7 +78,7 @@ const Donor = () => {
     });
     const defaultLayers = platform.createDefaultLayers();
     const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-      center: { lat: currentLatitude, lng: currentLongitude },
+      center: { lat: donorCurrentLatitude, lng: donorCurrentLongitude },
       zoom: 9,
       pixelRatio: window.devicePixelRatio || 1
     });
@@ -80,48 +88,38 @@ const Donor = () => {
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
 
     //console.log(behavior, ui);
-    if (nearbyLatitude && nearbyLongitude) {
-      const request = {
-        mode: "fastest;car",
-        waypoint0: `geo!${currentLatitude},${currentLongitude}`,
-        waypoint1: `geo!${nearbyLatitude},${nearbyLongitude}`,
-        representation: "display"
-      };
-      console.log(
-        "nLat: " +
-          nearbyLatitude +
-          "nL: " +
-          nearbyLongitude +
-          "cL : " +
-          currentLatitude
-      );
-      const router = platform.getRoutingService();
-      router.calculateRoute(request, response => {
-        const shape = response.response.route[0].shape.map(x => x.split(","));
-        const linestring = new H.geo.LineString();
-        shape.forEach(s => linestring.pushLatLngAlt(s[0], s[1]));
-        const routeLine = new H.map.Polyline(linestring, {
-          style: { strokeColor: "red", lineWidth: 3 }
-        });
 
-        hMap.addObject(routeLine);
-        hMap
-          .getViewModel()
-          .setLookAtData({ bounds: routeLine.getBoundingBox() });
+    const request = {
+      mode: "fastest;car",
+      waypoint0: `geo!${donorCurrentLatitude},${donorCurrentLongitude}`,
+      waypoint1: `geo!${nearbyBloodBankLatitude},${nearbyBloodBankLongitude}`,
+      representation: "display"
+    };
+
+    const router = platform.getRoutingService();
+    router.calculateRoute(request, response => {
+      const shape = response.response.route[0].shape.map(x => x.split(","));
+      const linestring = new H.geo.LineString();
+      shape.forEach(s => linestring.pushLatLngAlt(s[0], s[1]));
+      const routeLine = new H.map.Polyline(linestring, {
+        style: { strokeColor: "red", lineWidth: 3 }
       });
-    }
+
+      hMap.addObject(routeLine);
+      hMap.getViewModel().setLookAtData({ bounds: routeLine.getBoundingBox() });
+    });
 
     //Donor/current user Marker
     const customIcon = new H.map.Icon(BlueMarker);
     const donorLocation = new H.map.Marker(
-      { lat: currentLatitude, lng: currentLongitude },
+      { lat: donorCurrentLatitude, lng: donorCurrentLongitude },
       { icon: customIcon }
     );
 
     //bloodbank marker
     const bloodbankMarkerIcon = new H.map.Icon(RedMarker);
     const bloodbankMarker = new H.map.Marker(
-      { lat: nearbyLatitude, lng: nearbyLongitude },
+      { lat: nearbyBloodBankLatitude, lng: nearbyBloodBankLongitude },
       { icon: bloodbankMarkerIcon }
     );
     hMap.addObject(bloodbankMarker);
@@ -142,10 +140,10 @@ const Donor = () => {
     };
   }, [
     mapRef,
-    currentLatitude,
-    currentLongitude,
-    nearbyLatitude,
-    nearbyLongitude
+    donorCurrentLatitude,
+    donorCurrentLongitude,
+    nearbyBloodBankLatitude,
+    nearbyBloodBankLongitude
   ]);
 
   document.body.className = classes.bcg;
@@ -173,6 +171,7 @@ const Donor = () => {
   };
 
   const gg1 = () => {
+    console.log("BBBS");
     console.log(BloodBank_Data);
   };
 
@@ -185,8 +184,9 @@ const Donor = () => {
       );
     }
   };
-  
+
   const gg = () => {
+    console.log("rec");
     console.log(Receiver_Data);
   };
   const renderNearbyRecievers = () => {
