@@ -50,7 +50,13 @@ const OrderPage = ({ set, bbEmail, bbPhone, bbName, bbAddress, orderLoad }) => {
   return (
     <div className="container">
       <div style={{ backgroundColor: "white" }}>
-        <Card>
+        <Card
+          style={{
+            margin: "50px",
+            padding: "10px",
+            borderRadius: "10px"
+          }}
+        >
           <Card.Text>Confirm Your Details</Card.Text>
           <Card.Text>
             Odered Blood type: {isAuthenticated().receiver.blood}
