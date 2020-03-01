@@ -5,9 +5,9 @@ import classes from "./DonorSignup.module.css";
 import RedMarker from "../../Assets/RedMarker.svg";
 import BlueMarker from "../../Assets/BlueMarker.svg";
 import GreenMarker from "../../Assets/GreenMarker.svg";
-import { Card, Col, Row, Text, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 // import HereMap from "./Map/HereMap";
-import { DisplayMapFC } from "./DisplayMapFC";
+import { DisplayMapFC } from "./DisplayMapFC.jsx";
 
 const Donor = () => {
   const [donorCurrentLatitude, setdonorCurrentLatitude] = useState(12);
@@ -17,9 +17,6 @@ const Donor = () => {
   const [nearbyBloodBankLongitude, setNearbyBloodBankLongitude] = useState(
     null
   );
-
-  const [nearbyReceiverLongitude, setNearbyReceiverLongitude] = useState(null);
-  const [nearbyReceiverLatitude, setNearbyReceiverLatitude] = useState(null);
 
   const [BloodBank_Data, setBloodBank_Data] = useState([]);
   const [Receiver_Data, setReceiver_Data] = useState([]);
@@ -51,9 +48,6 @@ const Donor = () => {
           arr.push(data[i]);
         }
         setBloodBank_Data(arr);
-
-        setNearbyBloodBankLatitude(data[1].latitude);
-        setNearbyBloodBankLongitude(data[1].longitude);
       }
     });
 
@@ -62,13 +56,10 @@ const Donor = () => {
       else {
         let arr = [];
         for (let i in data) {
-          arr.push(JSON.stringify(data[i]));
+          arr.push(data[i]);
         }
         //console.log(arr);
         setReceiver_Data(arr);
-
-        setNearbyReceiverLatitude(data[1].latitude);
-        setNearbyReceiverLongitude(data[1].longitude);
       }
     });
 
@@ -93,11 +84,7 @@ const Donor = () => {
           </div>
           <div className={classes.mapInfoContainer}>
             <img src={RedMarker} alt="" height="50px" width="50px" />
-            <div style={{ padding: "10px" }}>Nearby Blood Banks</div>
-          </div>
-          <div className={classes.mapInfoContainer}>
-            <img src={GreenMarker} alt="" height="50px" width="50px" />
-            <div style={{ padding: "10px" }}>Needs Blood</div>
+            <div style={{ padding: "10px" }}>Nearby Blood Banks/Receivers</div>
           </div>
         </div>
       </div>
@@ -109,7 +96,6 @@ const Donor = () => {
     setNearbyBloodBankLatitude(lat);
     console.log(nearbyBloodBankLatitude);
     setNearbyBloodBankLongitude(lon);
-    // MapContainer();
   };
 
   return (
@@ -130,20 +116,26 @@ const Donor = () => {
             </h2>
             <div className={classes.InfoContainer}>
               <div className={classes.arrayContainer}>
+                <Card className={classes.card}>
+                  <Card.Text>Nearest BloodBanks</Card.Text>
+                </Card>
                 {BloodBank_Data.map((bloodbank, _id) => {
                   return (
                     <div>
-                      <Card>
-                        <Card.Text>{bloodbank.name}</Card.Text>
-                        <Card.Text>{bloodbank.address}</Card.Text>
-                        <Card.Text>{bloodbank.phone}</Card.Text>
-                        <Card.Text>{bloodbank.bloodTypes["A+"]}</Card.Text>
+                      <Card className={classes.card}>
+                        <Card.Text>Name: {bloodbank.name}</Card.Text>
+                        <Card.Text>Address: {bloodbank.address}</Card.Text>
+                        <Card.Text>Ph: {bloodbank.phone}</Card.Text>
+                        <Card.Text>
+                          Contains Blood A+: {bloodbank.bloodTypes["A+"]}L
+                        </Card.Text>
                         <button
+                          style={{ width: "fit-content" }}
                           onClick={event =>
                             setLocation(bloodbank.latitude, bloodbank.longitude)
                           }
                         >
-                          GG
+                          Navigate to this Blood Bank
                         </button>
                       </Card>
                     </div>
@@ -151,7 +143,28 @@ const Donor = () => {
                 })}
               </div>
               <div className={classes.arrayContainer}>
-                {/* {renderNearbyRecievers()} */}
+                <Card className={classes.card}>
+                  <Card.Text>Nearest Receiver</Card.Text>
+                </Card>
+                {Receiver_Data.map((receiver, _id) => {
+                  return (
+                    <div>
+                      <Card className={classes.card}>
+                        <Card.Text>Name: {receiver.name}</Card.Text>
+                        <Card.Text>Address: {receiver.address}</Card.Text>
+                        <Card.Text>Ph:{receiver.phone}</Card.Text>
+                        <button
+                          style={{ width: "fit-content" }}
+                          onClick={event =>
+                            setLocation(receiver.latitude, receiver.longitude)
+                          }
+                        >
+                          Navigate to this Receiver
+                        </button>
+                      </Card>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

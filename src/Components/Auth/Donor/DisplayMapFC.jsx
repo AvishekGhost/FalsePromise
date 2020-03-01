@@ -74,16 +74,7 @@ export const DisplayMapFC = ({
     );
     hMap.addObject(bloodbankMarker);
 
-    //reciever marker
-    const recieverMarkerIcon = new H.map.Icon(GreenMarker);
-    const recieverMarker = new H.map.Marker(
-      { lat: 22.598, lng: 88.3725 },
-      { icon: recieverMarkerIcon }
-    );
-
     hMap.addObject(donorLocation);
-
-    hMap.addObject(recieverMarker);
 
     return () => {
       hMap.dispose();
