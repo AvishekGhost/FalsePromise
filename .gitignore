@@ -24,4 +24,3 @@ Application/yarn-error.log*
 Application/node_modules
 
 Server/node_modules
-Server/.idea
